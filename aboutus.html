@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Euphoria Studio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            padding: 1rem 0;
+        }
+
+        header .logo {
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .login-btn {
+            background: #d26262;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .content {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .about-section {
+            padding: 3rem;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        .about-section h2 {
+            color: #d26262;
+        }
+
+        .about-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .about-container img {
+            max-width: 500px;
+            width: 100%;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .about-text {
+            flex: 1;
+            padding: 2rem;
+            max-width: 600px;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        .team-section {
+            background: #fff;
+            padding: 3rem;
+        }
+
+        .team-section h2 {
+            color: #d26262;
+            margin-bottom: 1rem;
+        }
+
+        .team-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            justify-items: center;
+        }
+
+        .team-member {
+            background: #f4f4f4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .team-member img {
+            border-radius: 50%;
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        .team-member:hover {
+            transform: scale(1.05);
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 60px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #333;
+            color: #fff;
+        }
+        @media (max-width: 768px) {
+            .about-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .about-text {
+                padding: 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .login-btn {
+                margin-top: 10px;
+            }
+
+            .about-container img {
+                max-width: 100%;
+            }
+
+            .team-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header (same as your home page for consistency) -->
+    <header>
+        <div class="logo">EUPHORIA</div>
+        <div class="welcome-msg" id="welcome-msg"></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="bookstudio.html">Book Studio</a></li>
+                <li><a href="aboutus.html">About Us</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="location.html">Location</a></li>
+                <li><button class="login-btn" id="auth-btn">Login/Signup</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <h2>About Euphoria Studio</h2>
+        <div class="about-container">
+            <img src="studio3.jpg" alt="Euphoria Studio">
+            <div class="about-text">
+                <p>
+                    Euphoria Studio was established in 2020 to provide a professional environment for artists, musicians, and performers to create and thrive. We offer cutting-edge equipment and facilities, as well as a range of services, including recording spaces, workshops, and creative collaboration opportunities.
+                </p>
+                <p>
+                    Whether you're a seasoned professional or an up-and-coming artist, Euphoria Studio is your go-to space for nurturing creativity. We take pride in helping artists realize their full potential and produce outstanding work.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <h2>Meet Our Team</h2>
+        <div class="team-container">
+            <div class="team-member" onclick="openModal('modal1')">
+                <img src="ceo1.jpeg" alt="George Jacob">
+                <h4>George Jacob</h4>
+                <p>Founder & CEO</p>
+            </div>
+            <div class="team-member" onclick="openModal('modal2')">
+                <img src="ceo2.jpeg" alt="Catherine Joseph">
+                <h4>Catherine Joseph</h4>
+                <p>Lead Instructor</p>
+            </div>
+            <div class="team-member" onclick="openModal('modal3')">
+                <img src="ceo3.jpeg" alt="Thomas Zach">
+                <h4>Thomas Zach</h4>
+                <p>Studio Manager</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal 1 -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal1')">&times;</span>
+            <h2>George Jacob</h2>
+            <p>Founder & CEO of Euphoria Studio. George brings years of experience in the music industry and a passion for helping artists reach their full potential.</p>
+        </div>
+    </div>
+
+    <!-- Modal 2 -->
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal2')">&times;</span>
+            <h2>Catherine Joseph</h2>
+            <p>Lead Instructor at Euphoria Studio. Catherine is an expert in dance and performance arts, guiding students through creative expression and technique.</p>
+        </div>
+    </div>
+
+    <!-- Modal 3 -->
+    <div id="modal3" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal3')">&times;</span>
+            <h2>Thomas Zach</h2>
+            <p>Studio Manager at Euphoria Studio. Thomas oversees studio operations and ensures that everything runs smoothly for our clients and team.</p>
+        </div>
+    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+        import { getFirestore, getDoc, doc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6-8WU2hj0pnZd0QQGJPx2Gm7cRXlbR70",
+            authDomain: "studiomanagement-edde1.firebaseapp.com",
+            projectId: "studiomanagement-edde1",
+            storageBucket: "studiomanagement-edde1.appspot.com",
+            messagingSenderId: "1016657481915",
+            appId: "1:1016657481915:web:fb6498ed156ba1cbf9199e"
+        };
+    
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+        const db = getFirestore();
+    
+        const authBtn = document.getElementById('auth-btn');
+        const welcomeMsg = document.getElementById('welcome-msg');
+    
+        // Handle user state change
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                const username = userDoc.data().username;
+                localStorage.setItem('username', username);
+                welcomeMsg.textContent = `Welcome, ${username}`;
+                authBtn.textContent = 'Logout';
+            } else {
+                welcomeMsg.textContent = '';
+                authBtn.textContent = 'Login/Signup';
+            }
+        });
+    
+        // Logout functionality
+        authBtn.addEventListener('click', (e) => {
+            if (auth.currentUser) {
+                signOut(auth).then(() => {
+                    localStorage.removeItem('username');
+                    window.location.href = 'index.html'; // Redirect to home page after logout
+                }).catch((error) => alert(error.message));
+            } else {
+                window.location.href = 'login.html'; // Redirect to login page if not logged in
+            }
+        });
+    </script>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Euphoria Studio. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Function to open modal
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+
+        // Function to close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        // Close modal when clicking outside of modal content
+        window.onclick = function(event) {
+            const modals = document.getElementsByClassName('modal');
+            for (let i = 0; i < modals.length; i++) {
+                if (event.target == modals[i]) {
+                    modals[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery & Events - Euphoria Studio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            padding: 1rem 0;
+        }
+
+        header .logo {
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .login-btn {
+            background: #d26262;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+
+        }
+.welcome-msg {
+    position: absolute;
+    right: 20px; /* Aligns the text to the right */
+    top: 50%; /* Centers vertically */
+    transform: translateY(-50%);
+    font-size: 1rem;
+    color: #fff;
+}
+
+
+        .content {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 3rem;
+        }
+
+        /* Gallery Item and Event Item Common Styles */
+        .gallery-item, .event-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item img, .event-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .gallery-item:hover, .event-item:hover {
+            transform: scale(1.05);
+        }
+
+        /* Specific Styles for Event Items */
+        .event-info {
+            padding: 10px;
+            text-align: left;
+        }
+
+        .event-info h3 {
+            margin: 10px 0 5px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .event-info p {
+            margin: 5px 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #333;
+            color: #fff;
+        }
+
+        /* Search and Sort styles */
+        .search-sort-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap; /* Allow wrapping */
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 600px; /* Limit search bar width */
+            margin-right: 20px; /* Space between search and sort */
+        }
+
+        .search-bar input {
+            padding: 10px;
+            width: 100%; /* Keep full width */
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .sort-options {
+            margin-left: 20px;
+        }
+
+        .sort-options select {
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .pagination {
+            margin-top: 2rem;
+        }
+
+        .pagination button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            border: none;
+            background: #d26262;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .pagination button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .gallery-container {
+                padding: 1rem; /* Reduce padding on small screens */
+            }
+
+            .event-item img {
+                height: auto; /* Adjust height for smaller screens */
+            }
+
+            .search-sort-container {
+                flex-direction: column; /* Stack search and sort on small screens */
+                align-items: stretch; /* Align items to stretch */
+            }
+
+            .sort-options {
+                margin-left: 0; /* Remove margin for stacked layout */
+                margin-top: 10px; /* Add space above sort options */
+            }
+            .welcome-msg {
+        right: 10px; /* Adjust for smaller screens */
+        font-size: 0.9rem;
+    }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">EUPHORIA</div>
+        <div class="welcome-msg" id="welcome-msg"></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="bookstudio.html">Book Studio</a></li>
+                <li><a href="aboutus.html">About Us</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="location.html">Location</a></li>
+                <li><button class="login-btn" id="auth-btn">Login/Signup</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Search and Sort Section -->
+    <section class="content">
+        <h2>Our Gallery & Events</h2>
+        <div class="search-sort-container">
+            <div class="search-bar">
+                <input type="text" id="search" placeholder="Search events...">
+            </div>
+            <div class="sort-options">
+                <label for="sort">Sort by:</label>
+                <select id="sort">
+                    <option value="title">Title</option>
+                    <option value="date">Date</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Gallery and Event Container -->
+        <div class="gallery-container" id="gallery"></div>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination"></div>
+    </section>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+        import { getFirestore, getDoc, doc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6-8WU2hj0pnZd0QQGJPx2Gm7cRXlbR70",
+            authDomain: "studiomanagement-edde1.firebaseapp.com",
+            projectId: "studiomanagement-edde1",
+            storageBucket: "studiomanagement-edde1.appspot.com",
+            messagingSenderId: "1016657481915",
+            appId: "1:1016657481915:web:fb6498ed156ba1cbf9199e"
+        };
+    
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+        const db = getFirestore();
+    
+        const authBtn = document.getElementById('auth-btn');
+        const welcomeMsg = document.getElementById('welcome-msg');
+    
+        // Handle user state change
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                const username = userDoc.data().username;
+                localStorage.setItem('username', username);
+                welcomeMsg.textContent = `Welcome, ${username}`;
+                authBtn.textContent = 'Logout';
+            } else {
+                welcomeMsg.textContent = '';
+                authBtn.textContent = 'Login/Signup';
+            }
+        });
+    
+        // Logout functionality
+        authBtn.addEventListener('click', (e) => {
+            if (auth.currentUser) {
+                signOut(auth).then(() => {
+                    localStorage.removeItem('username');
+                    window.location.href = 'index.html'; // Redirect to home page after logout
+                }).catch((error) => alert(error.message));
+            } else {
+                window.location.href = 'login.html'; // Redirect to login page if not logged in
+            }
+        });
+    </script>
+
+    <footer>
+        <p>&copy; 2024 Euphoria Studio. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const itemsPerPage = 3;
+        let currentPage = 1;
+        let allEvents = [];
+        let searchQuery = '';
+        let sortOption = 'title';
+
+        // Fetch gallery and event data
+        async function loadGallery() {
+            const response = await fetch('gallery_events.json');
+            const data = await response.json();
+            allEvents = data.events; // Store events data globally
+            displayGallery(data.gallery); // Display the gallery items
+            displayEvents(); // Display events
+        }
+
+        // Display gallery items
+        function displayGallery(galleryItems) {
+            const galleryContainer = document.getElementById('gallery');
+            galleryContainer.innerHTML = '';
+
+            galleryItems.forEach(item => {
+                const galleryItem = document.createElement('div');
+                galleryItem.classList.add('gallery-item');
+
+                if (item.type === 'image') {
+                    galleryItem.innerHTML = `
+                        <img src="${item.url}" alt="${item.title}">
+                        <h3>${item.title}</h3>
+                    `;
+                } else if (item.type === 'video') {
+                    galleryItem.innerHTML = `
+                        <iframe src="${item.url}" frameborder="0" allowfullscreen></iframe>
+                        <h3>${item.title}</h3>
+                    `;
+                }
+
+                galleryContainer.appendChild(galleryItem);
+            });
+        }
+
+        // Display events with search, sort, and pagination
+        function displayEvents() {
+            const galleryContainer = document.getElementById('gallery');
+            galleryContainer.innerHTML = '';
+
+            let filteredEvents = allEvents.filter(event => event.title.toLowerCase().includes(searchQuery.toLowerCase()));
+
+            // Sort events
+            if (sortOption === 'title') {
+                filteredEvents.sort((a, b) => a.title.localeCompare(b.title));
+            } else if (sortOption === 'date') {
+                filteredEvents.sort((a, b) => new Date(b.date) - new Date(a.date));
+            }
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const paginatedEvents = filteredEvents.slice(startIndex, startIndex + itemsPerPage);
+
+            paginatedEvents.forEach(event => {
+                const eventItem = document.createElement('div');
+                eventItem.classList.add('event-item');
+                eventItem.innerHTML = `
+                    <img src="${event.image}" alt="${event.title}">
+                    <div class="event-info">
+                        <h3>${event.title}</h3>
+                        <p>Date: ${event.date}</p>
+                        <p>${event.description}</p>
+                    </div>
+                `;
+                galleryContainer.appendChild(eventItem);
+            });
+
+            displayPagination(filteredEvents.length);
+        }
+
+        // Handle pagination
+        function displayPagination(totalItems) {
+            const paginationContainer = document.getElementById('pagination');
+            paginationContainer.innerHTML = '';
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const button = document.createElement('button');
+                button.innerText = i;
+                button.disabled = i === currentPage;
+                button.addEventListener('click', () => {
+                    currentPage = i;
+                    displayEvents();
+                });
+                paginationContainer.appendChild(button);
+            }
+        }
+
+        // Handle search input
+        document.getElementById('search').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            currentPage = 1;
+            displayEvents();
+        });
+
+        // Handle sorting
+        document.getElementById('sort').addEventListener('change', (e) => {
+            sortOption = e.target.value;
+            displayEvents();
+        });
+
+        // Load the gallery and event data on page load
+        window.onload = loadGallery;
+    </script>
+</body>
+</html>

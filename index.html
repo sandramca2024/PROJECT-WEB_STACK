@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Euphoria Studio</title>
+</head>
+<body>
+    <header>
+        <div class="logo">EUPHORIA</div>
+        <div class="welcome-msg" id="welcome-msg"></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="bookstudio.html">Book Studio</a></li>
+                <li><a href="aboutus.html">About Us</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="location.html">Location</a></li>
+                <li><button class="login-btn" id="auth-btn">Login/Signup</button></li>
+            </ul>
+        </nav>
+    </header>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            padding: 1rem 0;
+        }
+
+        header .logo {
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .login-btn {
+            background: #d26262;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+
+        }
+
+        .carousel {
+            position: relative;
+            overflow: hidden;
+            max-width: 100%;
+        }
+
+        .carousel-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 500px; 
+            object-fit: cover;
+        }
+
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+
+        .content {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .studio-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .info-item {
+            background: #f4f4f4;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: left;
+            transition: transform 0.3s;
+        }
+
+        .info-item img {
+            width: 100%;
+            height: 400px; 
+            object-fit: cover;
+        }
+
+        .info-item:hover {
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #333;
+            color: #fff;
+        }
+        @media (max-width: 1200px) {
+            .carousel-slide img {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            header {
+                flex-direction: column;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            .studio-info {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .carousel-slide img {
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .studio-info {
+                grid-template-columns: 1fr;
+            }
+
+            .carousel-slide img {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            header .logo {
+                font-size: 1.5rem;
+            }
+
+            .login-btn {
+                padding: 8px 16px;
+            }
+
+            .carousel-slide img {
+                height: 250px;
+            }
+        }
+    </style>
+
+    <section class="carousel">
+        <div class="carousel-container">
+            <div class="carousel-slide active">
+                <img src="studio3.jpg" alt="Euphoria Studio 1">
+            </div>
+            <div class="carousel-slide">
+                <img src="studio4.jpg" alt="Euphoria Studio 2">
+            </div>
+            <div class="carousel-slide">
+                <img src="studio5.jpg" alt="Euphoria Studio 3">
+            </div>
+            <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+            <button class="next" onclick="moveSlide(1)">&#10095;</button>
+        </div>
+    </section>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+        import { getFirestore, getDoc, doc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6-8WU2hj0pnZd0QQGJPx2Gm7cRXlbR70",
+            authDomain: "studiomanagement-edde1.firebaseapp.com",
+            projectId: "studiomanagement-edde1",
+            storageBucket: "studiomanagement-edde1.appspot.com",
+            messagingSenderId: "1016657481915",
+            appId: "1:1016657481915:web:fb6498ed156ba1cbf9199e"
+        };
+    
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+        const db = getFirestore();
+    
+        const authBtn = document.getElementById('auth-btn');
+        const welcomeMsg = document.getElementById('welcome-msg');
+    
+        // Handle user state change
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                const username = userDoc.data().username;
+                localStorage.setItem('username', username);
+                welcomeMsg.textContent = `Welcome, ${username}`;
+                authBtn.textContent = 'Logout';
+            } else {
+                welcomeMsg.textContent = '';
+                authBtn.textContent = 'Login/Signup';
+            }
+        });
+    
+        // Logout functionality
+        authBtn.addEventListener('click', (e) => {
+            if (auth.currentUser) {
+                signOut(auth).then(() => {
+                    localStorage.removeItem('username');
+                    window.location.href = 'index.html'; // Redirect to home page after logout
+                }).catch((error) => alert(error.message));
+            } else {
+                window.location.href = 'login.html'; // Redirect to login page if not logged in
+            }
+        });
+    </script>
+    <section class="content">
+        <h2>Welcome to Euphoria Studio</h2>
+        <p>Discover your passion for music and creative arts with our exclusive studio offerings. At Euphoria Studio, we offer a wide range of services tailored to meet your creative needs.</p>
+
+        <h3>About Our Studio</h3>
+        <div class="studio-info">
+            <div class="info-item">
+                <img src="sound quality.jpeg" alt="Sound Quality">
+                <strong>Sound Quality:</strong>
+                <p>Our studio is equipped with state-of-the-art soundproofing to ensure optimal audio quality for all recordings.</p>
+            </div>
+            <div class="info-item">
+                <img src="furnishedfloor.jpeg" alt="Furnished Floors">
+                <strong>Furnished Floors:</strong>
+                <p>We have specially designed flooring to enhance sound absorption, providing a better acoustic experience.</p>
+            </div>
+            <div class="info-item">
+                <img src="highend.jpeg" alt="High-End Equipment">
+                <strong>High-End Equipment:</strong>
+                <p>Enjoy access to top-tier recording equipment and instruments for all your creative needs.</p>
+            </div>
+        </div>
+        
+        <p>Join us today and become part of a thriving creative community!</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Euphoria Studio. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let slideIndex = 0;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.carousel-slide');
+            if (n >= slides.length) slideIndex = 0;
+            if (n < 0) slideIndex = slides.length - 1;
+            
+            slides.forEach((slide, index) => {
+                slide.style.display = (index === slideIndex) ? 'block' : 'none';
+            });
+        }
+
+        function moveSlide(n) {
+            slideIndex += n;
+            showSlide(slideIndex);
+        }
+
+        // Initial call
+        showSlide(slideIndex);
+    </script>
+</body>
+</html>

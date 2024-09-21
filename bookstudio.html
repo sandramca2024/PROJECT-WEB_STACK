@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Studio - Euphoria Studio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            padding: 1rem 0;
+        }
+
+        header .logo {
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .login-btn {
+            background: #d26262;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+
+        }
+
+        .content {
+            padding: 2rem;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .booking-container {
+            background: #f4f4f4;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 500px;
+            margin: 1rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .booking-container h3 {
+            margin-bottom: 1.5rem;
+        }
+
+        .booking-container label {
+            display: block;
+            margin-bottom: 0.5rem;
+            text-align: left;
+        }
+
+        .booking-container input {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .booking-container button {
+            background: #d26262;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .booking-container button:hover {
+            background: #a44b4b;
+        }
+
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 800px;
+            margin: 1rem;
+        }
+
+        .class-item {
+            background: #f4f4f4;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .class-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .class-item h3 {
+            margin-top: 10px;
+            font-size: 1.5rem;
+        }
+
+        .class-item p {
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+
+        .class-item button {
+            padding: 10px 20px;
+            background: #d26262;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .class-item button:hover {
+            background: #a44b4b;
+        }
+
+        .class-item:hover {
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #333;
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+
+            .booking-container,
+            .class-grid {
+                width: 90%;
+                margin: 1rem auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">EUPHORIA</div>
+        <div class="welcome-msg" id="welcome-msg"></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="bookstudio.html">Book Studio</a></li>
+                <li><a href="aboutus.html">About Us</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="location.html">Location</a></li>
+                <li><button class="login-btn" id="auth-btn">Login/Signup</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="content">
+        <div class="booking-container">
+            <h3>Select Booking Details</h3>
+            <form id="bookingForm">
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Your Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="date">Select Date:</label>
+                <input type="date" id="date" name="date" required>
+
+                <label for="time">Select Time:</label>
+                <input type="time" id="time" name="time" required>
+
+                <label for="duration">Duration (hours):</label>
+                <input type="number" id="duration" name="duration" min="1" max="6" required>
+
+                <input type="hidden" id="selected-class" name="selected-class">
+
+                <p>Amount per hour: $50</p>
+                <p id="totalCost">Total Cost: $<span id="cost">0</span></p>
+                <button type="submit">Book Now</button>
+            </form>
+        </div>
+
+        <div class="class-grid">
+            <div class="class-item">
+                <img src="contemp.jpeg" alt="Contemporary Dance">
+                <h3>Contemporary Dance</h3>
+                <p>Explore fluid movement and expression in this dynamic contemporary dance class.</p>
+                <button onclick="applyForClass('Contemporary Dance')">Apply</button>
+            </div>
+            <div class="class-item">
+                <img src="guitar.jpeg" alt="Guitar Class">
+                <h3>Guitar Class</h3>
+                <p>Learn to play guitar from basics to advanced techniques in our guitar class.</p>
+                <button onclick="applyForClass('Guitar Class')">Apply</button>
+            </div>
+            <div class="class-item">
+                <img src="violin.jpeg" alt="Violin Class">
+                <h3>Violin Class</h3>
+                <p>Master the art of playing the violin with our expert-led violin lessons.</p>
+                <button onclick="applyForClass('Violin Class')">Apply</button>
+            </div>
+            <div class="class-item">
+                <img src="yoga.jpeg" alt="Yoga Class">
+                <h3>Yoga Class</h3>
+                <p>Find balance, strength, and peace with our rejuvenating yoga classes.</p>
+                <button onclick="applyForClass('Yoga Class')">Apply</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Euphoria Studio. All rights reserved.</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6-8WU2hj0pnZd0QQGJPx2Gm7cRXlbR70",
+            authDomain: "studiomanagement-edde1.firebaseapp.com",
+            projectId: "studiomanagement-edde1",
+            storageBucket: "studiomanagement-edde1.appspot.com",
+            messagingSenderId: "1016657481915",
+            appId: "1:1016657481915:web:fb6498ed156ba1cbf9199e"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        const bookingForm = document.getElementById('bookingForm');
+        const costDisplay = document.getElementById('cost');
+        const authBtn = document.getElementById('auth-btn');
+        const welcomeMsg = document.getElementById('welcome-msg');
+        const amountPerHour = 50;
+        let selectedClass = '';
+
+        // Validate form before submission
+        function validateForm() {
+            const date = new Date(document.getElementById('date').value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Set time to midnight for accurate comparison
+
+            if (date < today) {
+                alert("You cannot select a date before today.");
+                return false;
+            }
+
+            const time = document.getElementById('time').value;
+            const hour = parseInt(time.split(':')[0]);
+
+            if (hour < 8 || hour >= 22) {
+                alert("Time must be between 8:00 AM and 10:00 PM.");
+                return false;
+            }
+
+            const duration = parseInt(document.getElementById('duration').value);
+            if (duration > 5) {
+                alert("Duration cannot exceed 5 hours.");
+                return false;
+            }
+
+            return true;
+        }
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                const username = userDoc.data().username;
+                localStorage.setItem('username', username);
+                welcomeMsg.textContent = `Welcome, ${username}`;
+                authBtn.textContent = 'Logout';
+            } else {
+                welcomeMsg.textContent = '';
+                authBtn.textContent = 'Login/Signup';
+            }
+        });
+    
+        // Logout functionality
+        authBtn.addEventListener('click', (e) => {
+            if (auth.currentUser) {
+                signOut(auth).then(() => {
+                    localStorage.removeItem('username');
+                    window.location.href = 'index.html'; // Redirect to home page after logout
+                }).catch((error) => alert(error.message));
+            } else {
+                window.location.href = 'login.html'; // Redirect to login page if not logged in
+            }
+        });
+
+        // Function to handle class application
+        function applyForClass(className) {
+            if (selectedClass === className) {
+                alert(`You have deselected the ${className}.`);
+                selectedClass = ''; // Deselect the class
+                document.getElementById('selected-class').value = ''; // Clear the hidden input
+            } else {
+                alert(`You have selected the ${className}. Proceed to book now.`);
+                selectedClass = className; // Select the class
+                document.getElementById('selected-class').value = className; // Set the hidden input
+            }
+        }
+
+        // Calculate total cost based on duration
+        function calculateCost() {
+            const duration = parseInt(document.getElementById('duration').value) || 0;
+            const totalCost = duration * amountPerHour;
+            costDisplay.textContent = totalCost;
+        }
+
+        document.getElementById('duration').addEventListener('input', calculateCost);
+
+        // Handle booking form submission
+        bookingForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!validateForm()) return;
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const duration = document.getElementById('duration').value;
+            const totalCost = costDisplay.textContent;
+
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    const username = localStorage.getItem('username');
+                    // Store booking details in bookings table
+                    try {
+                        await addDoc(collection(db, 'bookings'), {
+                            name,
+                            email,
+                            date,
+                            time,
+                            duration,
+                            totalCost,
+                            selectedClass: selectedClass || ''
+                        });
+
+                        // Store class info in classes table
+                        await addDoc(collection(db, 'classes'), {
+                            email,
+                            username,
+                            classOpted: selectedClass || 'No class selected'
+                        });
+
+                        alert('Booking successful!');
+                    } catch (error) {
+                        alert(error.message);
+                    }
+                } else {
+                    alert('Please log in to book a class.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

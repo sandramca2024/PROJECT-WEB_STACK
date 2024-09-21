@@ -1,0 +1,132 @@
+{
+    "gallery": [
+      {
+        "type": "image",
+        "url": "studio4.jpg",
+        "title": "Beautiful Dance Studio",
+        "description": "A glimpse of our stunning dance studio."
+      },
+      {
+        "type": "image",
+        "url": "highend.jpeg",
+        "title": "High-end Recording Equipment",
+        "description": "Top-tier recording equipment for your professional needs."
+      },
+      {
+        "type": "video",
+        "url": "studiowalk.mp4",
+        "title": "Studio Walkthrough",
+        "description": "A complete walkthrough of our recording and dance studios."
+      }
+    ],
+    "events": [
+      {
+        "id": 1,
+        "title": "Annual Dance Competition 2023",
+        "date": "2023-08-15",
+        "image": "annualdance.jpeg",
+        "description": "Our annual dance competition where performers showcase their talents."
+      },
+      {
+        "id": 2,
+        "title": "Music Production Workshop 2024",
+        "date": "2024-03-10",
+        "image": "musicworkshop.jpg",
+        "description": "A workshop focusing on music production techniques led by industry experts."
+      },
+      
+      {
+        "id": 4,
+        "title": "Vocal Coaching Session",
+        "date": "2023-09-12",
+        "image": "vocalsessions.jpeg",
+        "description": "Improve your vocal skills with guidance from expert coaches."
+      },
+      {
+        "id": 6,
+        "title": "Hip Hop Dance Showcase",
+        "date": "2024-02-22",
+        "image": "hiphop.jpg",
+        "description": "An electrifying performance by some of the best hip-hop dancers in the city."
+      },
+      {
+        "id": 7,
+        "title": "Podcasting Seminar",
+        "date": "2023-10-30",
+        "image": "podcasting.jpg",
+        "description": "Learn how to create, record, and edit podcasts for a growing audience."
+      },
+      {
+        "id": 8,
+        "title": "Music Production Basics",
+        "date": "2024-04-15",
+        "image": "musicproductionbasics.jpeg",
+        "description": "An introductory session on the fundamentals of music production."
+      },
+      {
+        "id": 9,
+        "title": "Street Photography Event",
+        "date": "2024-05-10",
+        "image": "street.jpeg",
+        "description": "Capture the energy of the streets with our street photography event."
+      },
+      {
+        "id": 10,
+        "title": "Open Mic Night",
+        "date": "2023-11-18",
+        "image": "openmic.jpeg",
+        "description": "Join us for an open mic night showcasing emerging local talent."
+      },
+      {
+        "id": 11,
+        "title": "Dance Marathon 2024",
+        "date": "2024-06-22",
+        "image": "dancemarathon.jpeg",
+        "description": "Show off your dance moves and compete for prizes at our dance marathon."
+      },
+      {
+        "id": 12,
+        "title": "Acoustic Jam Session",
+        "date": "2024-07-05",
+        "image": "acoustic.jpeg",
+        "description": "A relaxed acoustic jam session featuring talented local musicians."
+      },
+      {
+        "id": 14,
+        "title": "Salsa Dance Workshop",
+        "date": "2024-02-10",
+        "image": "salsa.jpg",
+        "description": "Learn the basics of salsa dancing from experienced instructors."
+      },
+      {
+        "id": 15,
+        "title": "Classical Music Recital",
+        "date": "2024-03-25",
+        "image": "classical.jpeg",
+        "description": "A night of beautiful classical music performed by talented musicians."
+      },
+      {
+        "id": 16,
+        "title": "Ballet Dance Recital",
+        "date": "2024-04-12",
+        "image": "ballroom.jpeg",
+        "description": "A captivating ballet performance by our studio's talented dancers."
+      },
+      {
+        "id": 17,
+        "title": "Jazz Improv Night",
+        "date": "2024-05-18",
+        "image": "jazz.jpeg",
+        "description": "Enjoy a night of spontaneous jazz improvisations from local artists."
+      },
+      {
+        "id": 18,
+        "title": "Contemporary Dance Workshop",
+        "date": "2024-06-05",
+        "image": "contemp.jpeg",
+        "description": "Learn expressive contemporary dance techniques in this interactive workshop."
+      }
+      
+    ]
+  }
+  
